@@ -32,6 +32,23 @@ columns = ['Order ID', 'Product', 'Quantity Ordered', 'Price Each', 'Order Date'
 # Make the data frames
 df = pd.DataFrame(columns=columns)
 
+
+def generate_random_address():
+
+    street_names = ['Main', '2nd', '1st', '4th', '5th', 'Park', '6th', '7th', 'Maple', 'Pine', 'Washington', '8th', 'Cedar', 'Elm', 'Walnut', '9th', '10th', 'Lake', 'Sunset', 'Lincoln', 'Jackson', 'Church', 'River', '11th', 'Willow', 'Jefferson', 'Center', '12th', 'North', 'Lakeview', 'Ridge', 'Hickory', 'Adams', 'Cherry', 'Highland', 'Johnson', 'South', 'Dogwood', 'West', 'Chestnut', '13th', 'Spruce', '14th', 'Wilson', 'Meadow', 'Forest', 'Hill', 'Madison']
+    cities = ['San Francisco', 'Boston', 'New York City', 'Austin', 'Dallas', 'Atlanta', 'Portland', 'Portland', 'Los Angeles', 'Seattle']
+    weights = [9, 4, 5, 2, 3, 3, 2, 0.5, 6, 3]
+    zips = ['94016', '02215', '10001', '73301', '75001', '30301', '97035', '04101', '90001', '98101']
+    state = ['CA', 'MA', 'NY', 'TX', 'TX', 'GA', 'OR', 'ME', 'CA', 'WA']
+
+    # Chose the street
+    street = random.choice(street_names)
+    # Chose city by weights
+    index = random.choices(range(len(cities)), weights=weights)[0]
+
+    return f"{random.randint(1,999)} {street} St, {cities[index]}, {state[index]} {zips[index]}"
+
+
 order_id = 143253
 
 product_list = [product for product in products]
@@ -50,11 +67,16 @@ for i in range(1, 13):
         order_amount = int(np.random.normal(loc=26000, scale=3000))
 
     for j in range(order_amount):
+        # make address
+        address = generate_random_address()
+        # chose the product
         product = random.choices(product_list, weights=weights)[0]
+        # Get the price
         price = products[product][0]
-        df.loc[j] = [order_id, product, 1, price, "NA", "NA"]
+        # set in data frame
+        df.loc[j] = [order_id, product, 1, price, "NA", address]
         order_id += 1
 
     month_value = calendar.month_name[i]
-    df.to_csv(f"{month_value}_data.csv", index=False)
+    df.to_csv(f"{month_value}_data.csv", index=False, sep='\t', header=False)
     break
