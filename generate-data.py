@@ -33,6 +33,27 @@ columns = ['Order ID', 'Product', 'Quantity Ordered', 'Price Each', 'Order Date'
 df = pd.DataFrame(columns=columns)
 
 
+# in this func we make address
+def generate_random_time(month):
+    # get the day range of the each month
+    day_range = calendar.monthrange(2021, month=month)[1]
+    # random day
+    random_day = random.randint(1, day_range)
+
+    # make a date
+    if random.random() < 0.5:
+        date = datetime.datetime(2021, month, random_day, 12, 0)
+    else:
+        date = datetime.datetime(2021, month, random_day, 20, 0)
+
+    time_offset = np.random.normal(loc=0, scale=180)
+
+    final_time = date + datetime.timedelta(minutes=time_offset)
+
+    return final_time.strftime("%m/%d/%y %H:%M")
+
+
+# In this func we make the address st.,ct., state
 def generate_random_address():
 
     street_names = ['Main', '2nd', '1st', '4th', '5th', 'Park', '6th', '7th', 'Maple', 'Pine', 'Washington', '8th', 'Cedar', 'Elm', 'Walnut', '9th', '10th', 'Lake', 'Sunset', 'Lincoln', 'Jackson', 'Church', 'River', '11th', 'Willow', 'Jefferson', 'Center', '12th', 'North', 'Lakeview', 'Ridge', 'Hickory', 'Adams', 'Cherry', 'Highland', 'Johnson', 'South', 'Dogwood', 'West', 'Chestnut', '13th', 'Spruce', '14th', 'Wilson', 'Meadow', 'Forest', 'Hill', 'Madison']
@@ -69,6 +90,8 @@ for i in range(1, 13):
     for j in range(order_amount):
         # make address
         address = generate_random_address()
+        # generate date and time
+        time = generate_random_time(i)
         # chose the product
         product = random.choices(product_list, weights=weights)[0]
         # Get the price
